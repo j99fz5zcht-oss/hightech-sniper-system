@@ -35,10 +35,13 @@ header p{margin:6px 0 0;font-size:13px;opacity:.92}
 .subtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .panel{display:none;margin-top:14px}
 .panel.active{display:block}
-.table-scroll{overflow:visible;margin-top:4px}
+.table-scroll{overflow-x:auto;margin-top:4px}
 table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;table-layout:fixed}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:top;word-break:break-word}
-th{position:sticky;top:var(--cluster-h,166px);z-index:6;background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line);box-shadow:0 1px 0 var(--line)}
+th{background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line);box-shadow:0 1px 0 var(--line)}
+.head-sticky{position:sticky;top:var(--cluster-h,166px);z-index:6;overflow:hidden;background:#eef2f7}
+#mhead,#mbody{width:max-content}
+#mhead{border:none;border-radius:0}
 th.vh{writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;padding:6px 1px;line-height:1.15;text-align:center}
 td.sdim{text-align:center}
 td.sniper,.sniper{font-weight:700;color:#b3261e}
@@ -148,9 +151,8 @@ tbody tr:hover{background:#f9fbff}
   </div>
   </div>
 
-  <div class="panel active" id="p-master">
-    <div class="table-scroll">
-    <table id="mtable">
+  <div class="head-sticky">
+    <table id="mhead">
       <colgroup>
         <col style="width:30px"><col style="width:86px"><col style="width:66px"><col style="width:46px"><col style="width:82px">
         <col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px">
@@ -162,6 +164,18 @@ tbody tr:hover{background:#f9fbff}
         <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th>
         <th>命中</th><th>灯色</th><th>阶段</th><th>PEG</th><th>红线</th><th>当前市值(亿)</th><th>当前股价</th><th>狙击价</th><th>合理中枢</th><th>结论</th>
       </tr></thead>
+    </table>
+  </div>
+
+  <div class="panel active" id="p-master">
+    <div class="table-scroll">
+    <table id="mbody">
+      <colgroup>
+        <col style="width:30px"><col style="width:86px"><col style="width:66px"><col style="width:46px"><col style="width:82px">
+        <col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px">
+        <col style="width:38px"><col style="width:52px"><col style="width:42px"><col style="width:196px">
+        <col style="width:54px"><col style="width:82px"><col style="width:76px"><col style="width:116px"><col style="width:84px"><col style="width:196px">
+      </colgroup>
       <tbody id="mtbody"></tbody>
     </table>
     </div>
@@ -385,6 +399,13 @@ function syncClusterH(){
 }
 syncClusterH();
 window.addEventListener('resize', syncClusterH);
+
+// sync header horizontal scroll with body scroll (no page-level horizontal bar)
+(function(){
+  const sc=document.querySelector('#p-master .table-scroll');
+  const hw=document.querySelector('.head-sticky');
+  if(sc&&hw){ sc.addEventListener('scroll',()=>{ hw.scrollLeft=sc.scrollLeft; }); }
+})();
 
 // init
 renderMaster("");
