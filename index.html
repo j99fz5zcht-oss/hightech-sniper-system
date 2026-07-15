@@ -35,10 +35,10 @@ header p{margin:6px 0 0;font-size:13px;opacity:.92}
 .subtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .panel{display:none;margin-top:14px}
 .panel.active{display:block}
-.table-scroll{overflow-x:auto;margin-top:4px}
-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;table-layout:fixed}
+.table-scroll{overflow:auto;max-height:calc(100vh - 132px);margin-top:4px;border-radius:10px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;table-layout:fixed}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:top;word-break:break-word}
-th{background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line)}
+th{position:sticky;top:0;z-index:6;background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line);box-shadow:0 1px 0 var(--line)}
 th.vh{writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;padding:6px 1px;line-height:1.15;text-align:center}
 td.sdim{text-align:center}
 td.sniper,.sniper{font-weight:700;color:#b3261e}
