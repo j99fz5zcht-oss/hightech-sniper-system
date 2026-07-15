@@ -17,9 +17,9 @@ body{margin:0;font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHe
 header{padding:18px 24px;background:linear-gradient(120deg,#1f3a5f,#2f6fed);color:#fff}
 header h1{margin:0;font-size:20px;font-weight:700}
 header p{margin:6px 0 0;font-size:13px;opacity:.92}
-.wrap{max-width:1280px;margin:0 auto;padding:16px}
-.toolbar{position:sticky;top:0;z-index:20;background:rgba(245,247,250,.96);
-  backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line)}
+.wrap{max-width:1440px;margin:0 auto;padding:16px}
+.toolbar{padding:12px 0;border-bottom:1px solid var(--line)}
+.topcluster{position:sticky;top:0;z-index:30;background:#f5f7fa;box-shadow:0 2px 6px rgba(0,0,0,.06)}
 .search{width:100%;max-width:420px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;outline:none}
 .search:focus{border-color:var(--blue)}
 .stats{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
@@ -35,10 +35,10 @@ header p{margin:6px 0 0;font-size:13px;opacity:.92}
 .subtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .panel{display:none;margin-top:14px}
 .panel.active{display:block}
-.table-scroll{overflow:auto;max-height:calc(100vh - 132px);margin-top:4px;border-radius:10px}
+.table-scroll{overflow:visible;margin-top:4px}
 table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;table-layout:fixed}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:top;word-break:break-word}
-th{position:sticky;top:0;z-index:6;background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line);box-shadow:0 1px 0 var(--line)}
+th{position:sticky;top:var(--cluster-h,166px);z-index:6;background:#eef2f7;color:#3a4654;font-weight:700;white-space:nowrap;border-bottom:2px solid var(--line);box-shadow:0 1px 0 var(--line)}
 th.vh{writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;padding:6px 1px;line-height:1.15;text-align:center}
 td.sdim{text-align:center}
 td.sniper,.sniper{font-weight:700;color:#b3261e}
@@ -133,6 +133,7 @@ tbody tr:hover{background:#f9fbff}
       </ul>
     </div>
   </details>
+  <div class="topcluster">
   <div class="toolbar">
     <input id="q" class="search" placeholder="🔍 全局筛选：输入股票名称或代码…">
     <div class="stats" id="stats"></div>
@@ -144,6 +145,7 @@ tbody tr:hover{background:#f9fbff}
     <button class="tab" data-t="L1">L1 物理硬核</button>
     <button class="tab" data-t="L2">L2 生态平台</button>
     <button class="tab" data-t="非狙击">非狙击(保留)</button>
+  </div>
   </div>
 
   <div class="panel active" id="p-master">
@@ -375,6 +377,14 @@ function updateStats(q){
     '<div class="stat">🔴 红灯 <b>'+(lc["红灯"]||0)+'</b></div>'+
     '<div class="stat">⚠ 触红线 <b>'+rlc+'</b></div>';
 }
+
+// keep header pinned just below the sticky toolbar+tabs cluster
+function syncClusterH(){
+  const c=document.querySelector('.topcluster');
+  if(c) document.documentElement.style.setProperty('--cluster-h', c.offsetHeight+'px');
+}
+syncClusterH();
+window.addEventListener('resize', syncClusterH);
 
 // init
 renderMaster("");
