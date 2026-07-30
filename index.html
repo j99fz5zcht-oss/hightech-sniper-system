@@ -86,6 +86,19 @@ tbody tr:hover{background:#f9fbff}
 .rules li{margin:2px 0}
 .rules b{color:var(--ink)}
 @media(max-width:640px){.rules .grid2{grid-template-columns:1fr}}
+.fbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:10px 0 2px}
+.fgroup{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fgroup .lbl{font-size:12px;color:var(--muted);font-weight:600;margin-right:2px}
+.fchip{padding:4px 11px;cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:16px;font-size:12.5px;color:var(--muted);user-select:none}
+.fchip:hover{border-color:var(--blue)}
+.fchip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.fchip.g.active{background:var(--green);border-color:var(--green)}
+.fchip.a.active{background:var(--amber);border-color:var(--amber)}
+.fchip.r.active{background:var(--red);border-color:var(--red)}
+.zone-in{color:var(--green);font-weight:700}
+.zone-low{color:var(--blue);font-weight:700}
+.zone-high{color:var(--red);font-weight:700}
+.zone-na{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -142,6 +155,33 @@ tbody tr:hover{background:#f9fbff}
     <div class="stats" id="stats"></div>
   </div>
 
+  <div class="fbar" id="fbar">
+    <div class="fgroup"><span class="lbl">灯色</span>
+      <span class="fchip g" data-f="light" data-v="绿灯">🟢绿灯</span>
+      <span class="fchip a" data-f="light" data-v="黄灯">🟡黄灯</span>
+      <span class="fchip r" data-f="light" data-v="红灯">🔴红灯</span>
+    </div>
+    <div class="fgroup"><span class="lbl">命中数</span>
+      <span class="fchip" data-f="hits" data-v="0">0</span>
+      <span class="fchip" data-f="hits" data-v="1">1</span>
+      <span class="fchip" data-f="hits" data-v="2">2</span>
+      <span class="fchip" data-f="hits" data-v="3">3</span>
+      <span class="fchip" data-f="hits" data-v="4">4</span>
+      <span class="fchip" data-f="hits" data-v="5">5</span>
+    </div>
+    <div class="fgroup"><span class="lbl">红线</span>
+      <span class="fchip r" data-f="redline" data-v="trig">⚠触发</span>
+      <span class="fchip g" data-f="redline" data-v="pass">✓通过</span>
+    </div>
+    <div class="fgroup"><span class="lbl">股价区间</span>
+      <span class="fchip g" data-f="zone" data-v="in">区间内</span>
+      <span class="fchip" data-f="zone" data-v="low">低于下限</span>
+      <span class="fchip r" data-f="zone" data-v="high">高于上限</span>
+      <span class="fchip" data-f="zone" data-v="na">不适用</span>
+    </div>
+    <span class="fchip" id="freset" style="border-style:dashed">↺ 重置筛选</span>
+  </div>
+
   <div class="tabs" id="tabs">
     <button class="tab active" data-t="master">总表</button>
     <button class="tab" data-t="L0">L0 算力基建</button>
@@ -157,12 +197,12 @@ tbody tr:hover{background:#f9fbff}
         <col style="width:30px"><col style="width:86px"><col style="width:66px"><col style="width:46px"><col style="width:82px">
         <col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px">
         <col style="width:38px"><col style="width:52px"><col style="width:42px"><col style="width:196px">
-        <col style="width:54px"><col style="width:82px"><col style="width:76px"><col style="width:116px"><col style="width:84px"><col style="width:196px">
+        <col style="width:54px"><col style="width:82px"><col style="width:76px"><col style="width:116px"><col style="width:84px"><col style="width:76px"><col style="width:196px">
       </colgroup>
       <thead><tr>
         <th>#</th><th>名称</th><th>代码</th><th>层级</th><th>板块</th>
         <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th>
-        <th>命中</th><th>灯色</th><th>阶段</th><th>PEG</th><th>红线</th><th>当前市值(亿)</th><th>当前股价</th><th>狙击价</th><th>合理中枢</th><th>结论</th>
+        <th>命中</th><th>灯色</th><th>阶段</th><th>PEG</th><th>红线</th><th>当前市值(亿)</th><th>当前股价</th><th>狙击价</th><th>合理中枢</th><th>狙击区间</th><th>结论</th>
       </tr></thead>
     </table>
   </div>
@@ -174,7 +214,7 @@ tbody tr:hover{background:#f9fbff}
         <col style="width:30px"><col style="width:86px"><col style="width:66px"><col style="width:46px"><col style="width:82px">
         <col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px"><col style="width:26px">
         <col style="width:38px"><col style="width:52px"><col style="width:42px"><col style="width:196px">
-        <col style="width:54px"><col style="width:82px"><col style="width:76px"><col style="width:116px"><col style="width:84px"><col style="width:196px">
+        <col style="width:54px"><col style="width:82px"><col style="width:76px"><col style="width:116px"><col style="width:84px"><col style="width:76px"><col style="width:196px">
       </colgroup>
       <tbody id="mtbody"></tbody>
     </table>
@@ -230,6 +270,40 @@ function redlineBadge(r){
   return '<span class="badge b-green">通过</span>';
 }
 
+function zoneStatus(d){
+  const sp=(d.sniperPrice||"").toString();
+  const m=sp.match(/([0-9]+\.?[0-9]*)\s*[–-]\s*([0-9]+\.?[0-9]*)/);
+  if(!m) return {key:"na", label:"不适用", cls:"zone-na"};
+  const lo=parseFloat(m[1]), hi=parseFloat(m[2]);
+  const p=d.price;
+  if(p==null) return {key:"na", label:"—", cls:"zone-na"};
+  if(p<lo) return {key:"low", label:"低于下限", cls:"zone-low"};
+  if(p>hi) return {key:"high", label:"高于上限", cls:"zone-high"};
+  return {key:"in", label:"区间内", cls:"zone-in"};
+}
+
+let filters={light:null, hits:null, redline:null, zone:null};
+function passes(d){
+  const q=document.getElementById("q").value.trim();
+  if(!matches(d,q)) return false;
+  if(filters.light && d.step0.light!==filters.light) return false;
+  if(filters.hits!==null && String(d.step0.hitCount)!==String(filters.hits)) return false;
+  if(filters.redline==="trig" && d.redline.passed!==false) return false;
+  if(filters.redline==="pass" && d.redline.passed===false) return false;
+  if(filters.zone){
+    const z=zoneStatus(d).key;
+    if(z!==filters.zone) return false;
+  }
+  return true;
+}
+function refreshCurrent(){
+  const q=document.getElementById("q").value.trim();
+  renderMaster(q);
+  const active=document.querySelector(".tab.active").dataset.t;
+  if(active!=="master") renderLayer(active,q);
+  updateStats(q);
+}
+
 function matches(d, q){
   if(!q) return true;
   return d.name.includes(q) || (d.code||"").includes(q) || (d.sector||"").includes(q);
@@ -239,7 +313,7 @@ function matches(d, q){
 function renderMaster(q){
   const tb = document.getElementById("mtbody");
   tb.innerHTML = "";
-  const list = sortList(DATA.filter(d=>matches(d,q)));
+  const list = sortList(DATA.filter(d=>passes(d)));
   let n=0;
   list.forEach((d,idx)=>{
     n++;
@@ -261,10 +335,11 @@ function renderMaster(q){
       '<td>'+priceCur(d.code)+esc(d.price==null?"—":d.price)+'</td>'+
       '<td class="sniper">'+esc(d.sniperPrice||"—")+'</td>'+
       '<td>'+fmtFair(d)+'</td>'+
+      '<td class="'+zoneStatus(d).cls+'">'+zoneStatus(d).label+'</td>'+
       '<td>'+esc(d.conclusion||"")+'</td>';
     tb.appendChild(tr);
   });
-  if(n===0) tb.innerHTML='<tr><td colspan="20" class="empty">无匹配结果</td></tr>';
+  if(n===0) tb.innerHTML='<tr><td colspan="21" class="empty">无匹配结果</td></tr>';
 }
 
 // ---- detail card ----
@@ -323,7 +398,7 @@ function renderLayer(layer, q){
   const grid=document.createElement("div");
   grid.className="grid";
   let n=0;
-  sortList(DATA.filter(d=>d.layer===layer && matches(d,q))).forEach(d=>{grid.innerHTML+=card(d);n++;});
+  sortList(DATA.filter(d=>d.layer===layer && passes(d))).forEach(d=>{grid.innerHTML+=card(d);n++;});
   el.innerHTML="";
   el.appendChild(grid);
   if(n===0) el.innerHTML='<div class="empty">无匹配结果</div>';
@@ -354,7 +429,7 @@ function paintL1(q){
   const grid=document.getElementById("grid-L1");
   grid.innerHTML="";
   let n=0;
-  sortList(DATA.filter(d=>d.layer==="L1" && matches(d,q) && (curSector==="__all"||d.sector===curSector)))
+  sortList(DATA.filter(d=>d.layer==="L1" && passes(d) && (curSector==="__all"||d.sector===curSector)))
     .forEach(d=>{grid.innerHTML+=card(d);n++;});
   if(n===0) grid.innerHTML='<div class="empty">无匹配结果</div>';
 }
@@ -372,16 +447,10 @@ document.querySelectorAll(".tab").forEach(t=>{
 });
 
 // ---- search ----
-document.getElementById("q").addEventListener("input",e=>{
-  const q=e.target.value.trim();
-  renderMaster(q);
-  const active=document.querySelector(".tab.active").dataset.t;
-  if(active!=="master") renderLayer(active,q);
-  updateStats(q);
-});
+document.getElementById("q").addEventListener("input",e=>{ refreshCurrent(); });
 
 function updateStats(q){
-  const list=DATA.filter(d=>matches(d,q));
+  const list=DATA.filter(d=>passes(d));
   const lc={}; const rlc=list.filter(d=>d.redline.passed===false).length;
   list.forEach(d=>{lc[d.step0.light]=(lc[d.step0.light]||0)+1;});
   const s=document.getElementById("stats");
@@ -406,6 +475,25 @@ window.addEventListener('resize', syncClusterH);
   const hw=document.querySelector('.head-sticky');
   if(sc&&hw){ sc.addEventListener('scroll',()=>{ hw.scrollLeft=sc.scrollLeft; }); }
 })();
+
+// ---- filters ----
+document.querySelectorAll("#fbar .fchip[data-f]").forEach(c=>{
+  c.onclick=()=>{
+    const f=c.dataset.f, v=c.dataset.v;
+    if(filters[f]===v){ filters[f]=null; c.classList.remove("active"); }
+    else {
+      document.querySelectorAll('#fbar .fchip[data-f="'+f+'"]').forEach(x=>x.classList.remove("active"));
+      filters[f]=v; c.classList.add("active");
+    }
+    refreshCurrent();
+  };
+});
+const fres=document.getElementById("freset");
+if(fres) fres.onclick=()=>{
+  filters={light:null, hits:null, redline:null, zone:null};
+  document.querySelectorAll("#fbar .fchip[data-f]").forEach(x=>x.classList.remove("active"));
+  refreshCurrent();
+};
 
 // init
 renderMaster("");
