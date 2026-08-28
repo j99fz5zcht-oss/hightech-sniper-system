@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f3f"/>
+      <stop offset="0.55" stop-color="#14356e"/>
+      <stop offset="1" stop-color="#1d4b9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g stroke="#3a5787" stroke-width="0.6" opacity="0.45">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+  <g transform="translate(220,235)" stroke="#c9a227" stroke-width="7" stroke-linecap="round" fill="none">
+    <circle cx="0" cy="0" r="86"/>
+    <path d="M0 -130v36 M0 94v36 M-130 0h-36 M94 0h36"/>
+  </g>
+  <circle cx="220" cy="235" r="14" fill="#c9a227"/>
+  <text x="400" y="260" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Heiti SC, sans-serif" font-size="72" font-weight="800" fill="#ffffff" letter-spacing="2">高科技二级市场狙击系统</text>
+  <text x="404" y="360" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Heiti SC, sans-serif" font-size="44" font-weight="700" fill="#e0b64a" letter-spacing="3">98 标的 · SOP 全量分析</text>
+  <g transform="translate(404,440)">
+    <circle cx="0"   cy="0" r="10" fill="#178a50"/>
+    <circle cx="30"  cy="0" r="10" fill="#178a50"/>
+    <circle cx="60"  cy="0" r="10" fill="#b9770a"/>
+    <circle cx="90"  cy="0" r="10" fill="#b9770a"/>
+    <circle cx="120" cy="0" r="10" fill="#cf3b3b"/>
+  </g>
+  <line x1="404" y1="500" x2="760" y2="500" stroke="#c9a227" stroke-width="3"/>
+  <text x="404" y="555" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="22" font-weight="500" fill="#a8b8d4" letter-spacing="2">Alpha Radar · L 层次 · 决策卡 · 执行策略</text>
+  <rect x="0" y="0" width="1200" height="3" fill="#c9a227"/>
+</svg>
