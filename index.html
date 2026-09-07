@@ -280,6 +280,13 @@ th.sortable.sorted .ind{opacity:1;color:var(--brand)}
 /* ---- 邀请二维码 ---- */
 #invmodal{position:fixed;inset:0;z-index:10002;background:rgba(10,20,40,.62);display:none;align-items:center;justify-content:center;padding:16px}
 #invmodal.open{display:flex}
+#admmodal{position:fixed;inset:0;z-index:10003;background:rgba(10,20,40,.62);display:none;align-items:center;justify-content:center;padding:16px}
+#admmodal.open{display:flex}
+#admbox{position:relative;background:var(--card);border-radius:14px;padding:20px;max-width:340px;width:100%;box-shadow:var(--shadow-lg)}
+#admbox h3{margin:0 0 12px;font-size:15px;font-weight:700;color:var(--ink)}
+#admbox .invrow{margin-bottom:0}
+.fchip[hidden]{display:none}
+.adminbadge{font-size:11.5px;color:var(--muted);margin-left:6px}
 #invbox{position:relative;background:var(--card);border-radius:14px;padding:20px;max-width:380px;width:100%;box-shadow:var(--shadow-lg);max-height:92vh;overflow:auto}
 #invbox h3{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--ink)}
 .invrow{display:flex;gap:8px;align-items:center;margin-bottom:10px}
@@ -385,7 +392,7 @@ th.sortable.sorted .ind{opacity:1;color:var(--brand)}
     </div>
     <span class="fchip" id="freset" role="button" tabindex="0" style="border-style:dashed">重置筛选</span>
     <span class="fchip" id="favonly" role="button" tabindex="0">★ 只看关注</span>
-    <span class="fchip" id="invitebtn" role="button" tabindex="0" title="输入手机号生成专属邀请二维码">✉ 邀请</span>
+    <span class="fchip" id="invitebtn" role="button" tabindex="0" title="输入手机号生成专属邀请二维码" hidden>✉ 邀请</span>
     <span class="fchip" id="csvexp" role="button" tabindex="0">导出 CSV</span>
     <span class="mini" id="themebtn" role="button" tabindex="0" title="切换深色 / 浅色">◐</span>
     <span id="colwrap"><span class="fchip" id="colbtn" role="button" tabindex="0" style="border-style:dashed">列设置 <span class="car">▾</span></span><div class="colpan" id="colpan"></div></span>
@@ -477,6 +484,16 @@ th.sortable.sorted .ind{opacity:1;color:var(--brand)}
   </div>
 </div>
 <button id="totop" aria-label="回到顶部">↑</button>
+<div id="admmodal" role="dialog" aria-modal="true" aria-labelledby="admtitle"><div id="admbox">
+  <button class="sclose" id="admclose" aria-label="关闭（Esc）">×</button>
+  <h3 id="admtitle">管理员验证</h3>
+  <div class="invtip" id="admtip">邀请码仅由管理员发放，请输入口令。</div>
+  <div class="invrow">
+    <input id="admpass" type="password" placeholder="管理员口令" aria-label="管理员口令" autocomplete="current-password">
+    <button id="admok" class="mini">验证</button>
+  </div>
+  <div class="invtip" style="margin-top:10px">验证通过后在本机保留 30 天，期间无需重复输入。</div>
+</div></div>
 <div id="invmodal" role="dialog" aria-modal="true" aria-labelledby="invtitle"><div id="invbox">
   <button class="sclose" id="invclose" aria-label="关闭（Esc）">×</button>
   <h3 id="invtitle">生成邀请二维码</h3>
@@ -504,6 +521,10 @@ const ASOF = "2026-09-07";
 const CHANGES = [{"code": "603228", "name": "景旺电子", "type": "zone", "from": "in", "to": "high"}, {"code": "301489", "name": "思泉新材", "type": "zone", "from": "in", "to": "high"}, {"code": "603228", "name": "景旺电子", "type": "move", "pct": 19.3, "from": 88.81, "to": 105.97}, {"code": "301489", "name": "思泉新材", "type": "move", "pct": 18.7, "from": 117.0, "to": 138.91}, {"code": "688498", "name": "源杰科技", "type": "move", "pct": 14.9, "from": 1481.0, "to": 1702.0}, {"code": "688802", "name": "沐曦股份", "type": "move", "pct": -14.2, "from": 664.15, "to": 570.08}, {"code": "000977", "name": "浪潮信息", "type": "move", "pct": -12.8, "from": 85.69, "to": 74.74}, {"code": "002851", "name": "麦格米特", "type": "move", "pct": 11.4, "from": 118.55, "to": 132.03}, {"code": "300308", "name": "中际旭创", "type": "move", "pct": 9.2, "from": 822.4, "to": 898.46}, {"code": "300570", "name": "太辰光", "type": "move", "pct": 9.0, "from": 189.04, "to": 206.1}, {"code": "002436", "name": "兴森科技", "type": "move", "pct": 8.2, "from": 33.97, "to": 36.75}, {"code": "300502", "name": "新易盛", "type": "move", "pct": 7.9, "from": 386.7, "to": 417.2}, {"code": "601138", "name": "工业富联", "type": "move", "pct": 7.7, "from": 61.8, "to": 66.57}, {"code": "688825", "name": "长鑫科技", "type": "move", "pct": 7.6, "from": 54.32, "to": 58.47}];
 const CHGDATE = "2026-09-02";
 const QRB64 = "";
+const ADMIN_SALT = "";
+const ADMIN_HASH = "";
+const ADMIN_ITER = parseInt("120000", 10) || 120000;
+const ADMIN_KEY = "sniper_admin_v1";
 const FAV_KEY = "sniper_fav_v1";
 let favSet = new Set();
 try { favSet = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || "[]")); } catch(e) { favSet = new Set(); }
@@ -1272,6 +1293,99 @@ function wrapText(g,text,x,y,maxW,lh,maxLines){
   }
   return y + n*lh;
 }
+/* ---- 管理员门禁：只有验证通过才显示「发邀请码」入口 ---- */
+function hexToBytes(h){
+  const out = new Uint8Array(h.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(h.substr(i * 2, 2), 16);
+  return out;
+}
+function bytesToHex(b){
+  let s = "";
+  for (let i = 0; i < b.length; i++) s += ("0" + b[i].toString(16)).slice(-2);
+  return s;
+}
+async function verifyAdminPass(pw){
+  if (!ADMIN_HASH || !ADMIN_SALT) return false;
+  try{
+    const salt = hexToBytes(ADMIN_SALT);
+    const enc = new TextEncoder().encode(pw);
+    const key = await crypto.subtle.importKey("raw", enc, "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits(
+      { name: "PBKDF2", salt: salt, iterations: ADMIN_ITER, hash: "SHA-256" }, key, 256);
+    return bytesToHex(new Uint8Array(bits)) === ADMIN_HASH.toLowerCase();
+  }catch(e){ return false; }
+}
+function adminAuthed(){
+  try{
+    const raw = localStorage.getItem(ADMIN_KEY);
+    if (!raw) return false;
+    const o = JSON.parse(raw);
+    return !!(o && o.until && Date.now() < Number(o.until));
+  }catch(e){ return false; }
+}
+function grantAdmin(){
+  try{ localStorage.setItem(ADMIN_KEY, JSON.stringify({ until: Date.now() + 30 * 864e5 })); }catch(e){}
+  const b = document.getElementById("invitebtn");
+  if (b) b.hidden = false;
+}
+function revokeAdmin(){
+  try{ localStorage.removeItem(ADMIN_KEY); }catch(e){}
+  const b = document.getElementById("invitebtn");
+  if (b) b.hidden = true;
+}
+function openAdmin(){
+  const m = document.getElementById("admmodal");
+  if (!m) return;
+  if (!ADMIN_HASH) {
+    const tip = document.getElementById("admtip");
+    if (tip) { tip.textContent = "尚未设置管理员口令，邀请入口已禁用。"; tip.style.color = "var(--red)"; }
+  }
+  m.classList.add("open");
+  const p = document.getElementById("admpass");
+  if (p) setTimeout(function(){ p.focus(); }, 60);
+}
+function closeAdmin(){ const m = document.getElementById("admmodal"); if (m) m.classList.remove("open"); }
+function initAdmin(){
+  const ok = document.getElementById("admok"), pw = document.getElementById("admpass");
+  const tip = document.getElementById("admtip");
+  if (ok) ok.onclick = async function(){
+    if (!pw) return;
+    if (tip) { tip.textContent = "正在验证…"; tip.style.color = ""; }
+    const pass = await verifyAdminPass(pw.value || "");
+    if (pass) {
+      grantAdmin();
+      pw.value = "";
+      closeAdmin();
+      if (tip) tip.textContent = "邀请码仅由管理员发放，请输入口令。";
+      openInvite();
+    } else {
+      if (tip) { tip.textContent = "口令不正确，请重试。"; tip.style.color = "var(--red)"; }
+      pw.value = "";
+      pw.focus();
+    }
+  };
+  if (pw) pw.addEventListener("keydown", function(e){ if (e.key === "Enter" && ok) ok.click(); });
+  const cl = document.getElementById("admclose");
+  if (cl) cl.onclick = closeAdmin;
+  const m = document.getElementById("admmodal");
+  if (m) m.addEventListener("click", function(e){ if (e.target === m) closeAdmin(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    const am = document.getElementById("admmodal");
+    if (am && am.classList.contains("open")) closeAdmin();
+  });
+  // 已授权则直接显示入口
+  if (adminAuthed()) {
+    const b = document.getElementById("invitebtn");
+    if (b) b.hidden = false;
+    return;
+  }
+  // 仅当网址带 ?admin 时才唤出口令框
+  try{
+    if (/[?&]admin\b/.test(location.search)) openAdmin();
+  }catch(e){}
+}
+
 /* ---- 邀请二维码：手机号 → 专属标识（不校验，仅作来源标识） ---- */
 const INV_KEY = "sniper_invites_v1";
 let INV_QR = "";
@@ -1383,6 +1497,7 @@ function doGen(phone){
   });
 }
 function openInvite(){
+  if (!adminAuthed()) { openAdmin(); return; }
   const m = document.getElementById("invmodal");
   if (m) m.classList.add("open");
   renderInviteList();
@@ -1535,6 +1650,7 @@ document.getElementById("sharemodal").addEventListener("click",e=>{
 
 // ---- init ----
 initTheme();
+initAdmin();
 initInvite();
 buildColPan();
 const urlTab=applyUrl();
